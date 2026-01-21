@@ -2,15 +2,32 @@ version: "3.8"
 
 services:
   backend:
-    build: ./backend
+    build: ./Backend
     container_name: backend_app
     ports:
-      - "3000:3000"
+      - "3001:3001"
     depends_on:
       - mongo
+    environment:
+      - MONGO_URL=mongodb://mongo:27017/mydb
+
+  frontend:
+    build: ./Frontend
+    container_name: frontend_app
+    ports:
+      - "5173:5173"
+    depends_on:
+      - backend
+    environment:
+      - VITE_API_URL=http://backend:3001
 
   mongo:
     image: mongo
     container_name: mongo_db
     ports:
       - "27017:27017"
+    volumes:
+      - mongo_data:/data/db
+
+volumes:
+  mongo_data:
