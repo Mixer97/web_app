@@ -1,15 +1,19 @@
+require('dotenv').config()
 
-const path = require('path')
 const express = require('express');
-const server = express();
+const cookieParser = require('cookie-parser');
+const jwt = require('jsonwebtoken');
+const db = require('./db.js');
+const auth = require('./auth.js');
+const { verify } = require('jsonwebtoken');
 
-server.get("/", (req, res) => {
-    res.sendFile(path.join(__dirname, 'index.html'));
-});
+const app = express();
 
-server.listen(3001, () => {
-    console.log("Server attivo!");
-});
+//middleware
+app.use(express.json())
 
+//routes
+const routeTest = require("./routes/test")
+app.use('/test', routeTest)
 
-
+app.listen(3001, () => console.log('Server Started'))
